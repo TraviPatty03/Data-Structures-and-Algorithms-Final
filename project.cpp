@@ -11,128 +11,159 @@ public:
         cord_x = (rand() % 100) + 1;
         cord_y = (rand() % 100) + 1;
 
-        if(cord_x < 50 && cord_y < 50){
+        if (cord_x < 50 && cord_y < 50) {
             cost = 0.5; //Super Poor District
-        }
-        else if(cord_x < 50 && cord_y >= 50){
+        } else if (cord_x < 50 && cord_y >= 50) {
             cost = 1; //Not-so poor District
-        }
-        else if(cord_x >= 50 && cord_y < 50){
+        } else if (cord_x >= 50 && cord_y < 50) {
             cost = 1.5; // Middle District
-        }
-        else if(cord_x >= 50 && cord_y >= 50){
+        } else if (cord_x >= 50 && cord_y >= 50) {
             cost = 2; //Rich ass motherfuckers
-        }
-        else{
+        } else {
             cout << "ERROR" << endl;
         }
     };
 
     //location
-    int cord_x ;
-    int cord_y ;
+    int cord_x;
+    int cord_y;
 
     //value
     double cost;
     int weight = 1;
-    double value = weight / cost;
+    double value;
+    int name;
 
 private:
 };
 
-void printArray(Subject* sub, int size);
+void printArray(Subject *sub, int size);
 
 //determine weight of each subject
 void makeWeight(Subject sub[], int size);
 
+//sets value of subject
+void setValues(Subject sub[], int size);
+
+//creates a new array of most important subject
+void MostValuable(Subject sub[], Subject data[], int budget, int size);
+
 //sort array
-void heapify(Subject arr[], int N, int i);
-void heapSort(Subject arr[], int N);
+int partition(Subject arr[], int start, int end);
+
+void quickSort(Subject arr[], int start, int end);
+
 
 int main() {
     srand(time(nullptr));
     int size = 100;
+    int budget = 10;
 
-    Subject* sub = new Subject[size];
+    Subject *sub = new Subject[size];
+    Subject *data = new Subject[size];
 
     makeWeight(sub, size);
+    setValues(sub, size);
 
-    heapSort(sub, size);
+    quickSort(sub, 0, size - 1);
 
-    printArray(sub, size);
+    MostValuable(sub, data, budget, size);
 
-    delete [] sub;
+    printArray(data, size);
+
+    delete[] sub;
     return 0;
 }
 
-void printArray(Subject sub[], int size){
+void printArray(Subject sub[], int size) {
     //print coordinates
     for (int i = 0; i <= size - 1; i++) {
-        cout << i << ": weight - " << sub[i].weight << endl;
+        if (sub[i].value != 0) {
+            cout << "Subject " << sub[i].name << endl;
+            cout << "Cost - " << sub[i].cost << endl;
+            cout << "value - " << sub[i].value << endl;
+        }
     }
 }
 
-void makeWeight(Subject sub[], int size){
-    for(int i = 0; i < size; i++){
-        for(int j = 0; j < size; j++){
-            if(i == j)
+void setValues(Subject sub[], int size) {
+    for (int i = 0; i <= size - 1; i++) {
+        sub[i].value = ((double) sub[i].weight / sub[i].cost);
+        sub[i].name = i;
+    }
+}
+
+void MostValuable(Subject sub[], Subject data[], int budget, int size) {
+    for (int i = size - 1; i >= 0; i--) {
+        if (budget <= 0) {
+            break;
+        }
+        data[size - 1 - i] = sub[i];
+        budget -= sub[i].cost;
+    }
+}
+
+void makeWeight(Subject sub[], int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (i == j)
                 continue;
 
             int distance = sqrt(pow(sub[i].cord_x - sub[j].cord_x, 2) + pow(sub[i].cord_y - sub[j].cord_y, 2));
-            if(distance <= 4){
+            if (distance <= 4) {
                 sub[i].weight++;
             }
         }
     }
 }
 
-void heapify(Subject arr[], int N, int i)
-{
+int partition(Subject arr[], int start, int end) {
 
-    // Initialize largest as root
-    int largest = i;
+    int pivot = arr[start].value;
 
-    // left = 2*i + 1
-    int l = 2 * i + 1;
-
-    // right = 2*i + 2
-    int r = 2 * i + 2;
-
-    // If left child is larger than root
-    if (l < N && arr[l].value > arr[largest].value)
-        largest = l;
-
-    // If right child is larger than largest
-    // so far
-    if (r < N && arr[r].value > arr[largest].value)
-        largest = r;
-
-    // If largest is not root
-    if (largest != i) {
-        swap(arr[i], arr[largest]);
-
-        // Recursively heapify the affected
-        // sub-tree
-        heapify(arr, N, largest);
+    int count = 0;
+    for (int i = start + 1; i <= end; i++) {
+        if (arr[i].value <= pivot)
+            count++;
     }
+
+    // Giving pivot element its correct position
+    int pivotIndex = start + count;
+    swap(arr[pivotIndex], arr[start]);
+
+    // Sorting left and right parts of the pivot element
+    int i = start, j = end;
+
+    while (i < pivotIndex && j > pivotIndex) {
+
+        while (arr[i].value <= pivot) {
+            i++;
+        }
+
+        while (arr[j].value > pivot) {
+            j--;
+        }
+
+        if (i < pivotIndex && j > pivotIndex) {
+            swap(arr[i++], arr[j--]);
+        }
+    }
+
+    return pivotIndex;
 }
 
-// Main function to do heap sort
-void heapSort(Subject arr[], int N)
-{
+void quickSort(Subject arr[], int start, int end) {
 
-    // Build heap (rearrange array)
-    for (int i = N / 2 - 1; i >= 0; i--)
-        heapify(arr, N, i);
+    // base case
+    if (start >= end)
+        return;
 
-    // One by one extract an element
-    // from heap
-    for (int i = N - 1; i > 0; i--) {
+    // partitioning the array
+    int p = partition(arr, start, end);
 
-        // Move current root to end
-        swap(arr[0], arr[i]);
+    // Sorting the left part
+    quickSort(arr, start, p - 1);
 
-        // call max heapify on the reduced heap
-        heapify(arr, i, 0);
-    }
+    // Sorting the right part
+    quickSort(arr, p + 1, end);
 }
