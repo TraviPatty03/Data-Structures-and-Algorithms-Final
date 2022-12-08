@@ -25,13 +25,15 @@ int main() {
 
     //prints Subject Name, Cost, and value
     cout << "-----My Algorithm------" << endl;
-    printArray(best, size);
-
+//    printArray(best, size);
+    cout << "The total Value is: "  << totalValue(best, size) << endl;
+    
     //Creates greedy sort
     Greedy(sub, greedy, budget, size);
 
     cout << "----Greedy Algorithm---" << endl;
-    printArray(greedy, size);
+//    printArray(greedy, size);
+    cout << "The total Value is: "  << totalValue(greedy, size) << endl;
 
     //deletes the arrays in the heap
     delete[] sub;

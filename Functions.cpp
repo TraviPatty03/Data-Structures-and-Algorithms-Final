@@ -20,7 +20,7 @@ void setValues(Subject sub[], int size) {
     for (int i = 0; i <= size - 1; i++) {
         //the value is determined by the weight divided by cost to make sur you get the most bang for your buck
         //the weight is casted as a double since it is instantiated as an int
-        sub[i].value = ((double) sub[i].weight / sub[i].cost);
+        sub[i].value = ((double) sub[i].weight * sub[i].cost);
         sub[i].name = i;
     }
 }
@@ -38,6 +38,14 @@ void makeWeight(Subject sub[], int size) {
             }
         }
     }
+}
+
+double totalValue(Subject sub[],int size){
+    double x = 0;
+    for(int i = 0; i <= size - 1; i++){
+        x += sub[i].value;
+    }
+    return x;
 }
 
 int partition(Subject arr[], int start, int end) {
@@ -162,11 +170,16 @@ void Greedy_quickSort(Subject arr[], int start, int end) {
 
 //this is for case Greedy
 void Greedy(Subject sub[], Subject data[], double budget, int size) {
+    int x = 0;
     Greedy_quickSort(sub, 0, size - 1);
     for (int i = 0; i <= size - 1; i++) {
+        if (sqrt(pow(sub[i].cord_x - data[x].cord_x, 2) + pow(sub[i].cord_y - data[x].cord_y, 2) <= 4)) {
+            continue;
+        }
         if (budget > 0) {
             data[i] = sub[i];
             budget -= sub[i].cost;
+            x++;
         }
     }
 }
