@@ -8,6 +8,7 @@ using namespace std;
 class Subject {
 public:
     Subject() {
+        //randomly sets coordinates
         cord_x = (rand() % 100) + 1;
         cord_y = (rand() % 100) + 1;
 
@@ -18,7 +19,7 @@ public:
         } else if (cord_x >= 50 && cord_y < 50) {
             cost = 1.5; // Middle District
         } else if (cord_x >= 50 && cord_y >= 50) {
-            cost = 2; //Rich ass motherfuckers
+            cost = 2; //Rich District
         } else {
             cout << "ERROR" << endl;
         }
@@ -32,11 +33,12 @@ public:
     double cost;
     int weight = 1;
     double value;
-    int name;
 
-private:
+    //name to tell which subject is which after sorting
+    int name;
 };
 
+//prints the array
 void printArray(Subject *sub, int size);
 
 //determine weight of each subject
@@ -46,71 +48,92 @@ void makeWeight(Subject sub[], int size);
 void setValues(Subject sub[], int size);
 
 //creates a new array of most important subject
-void MostValuable(Subject sub[], Subject data[], int budget, int size);
+void MostValuable(Subject sub[], Subject data[], double budget, int size);
 
 //sort array
 int partition(Subject arr[], int start, int end);
-
 void quickSort(Subject arr[], int start, int end);
 
 
 int main() {
+    //sets time seed
     srand(time(nullptr));
-    int size = 100;
-    int budget = 10;
 
+    //constants. These are just values given by professor
+    int size = 100;
+    double budget = 10;
+
+    //Array of subjects to allow for easier loops
     Subject *sub = new Subject[size];
     Subject *data = new Subject[size];
 
+    //Gets the values not set in the constructor
     makeWeight(sub, size);
     setValues(sub, size);
 
+    //quick sort algorithm that sorts by value
     quickSort(sub, 0, size - 1);
 
+    //grabs the most valueable from sorted array and makes sure that one subject is not close to another
     MostValuable(sub, data, budget, size);
 
+    //prints Subject Name, Cost, and value
     printArray(data, size);
 
+    //deletes the arrays in the heap
     delete[] sub;
+    delete[] data;
+
     return 0;
 }
 
 void printArray(Subject sub[], int size) {
     //print coordinates
     for (int i = 0; i <= size - 1; i++) {
-        if (sub[i].value != 0) {
+        if (sub[i].value != 0) { //This is mainly for the second array where the array is not filled up
             cout << "Subject " << sub[i].name << endl;
             cout << "Cost - " << sub[i].cost << endl;
             cout << "value - " << sub[i].value << endl;
+            cout << endl;
         }
     }
 }
 
 void setValues(Subject sub[], int size) {
     for (int i = 0; i <= size - 1; i++) {
+        //the value is determined by the weight divided by cost to make sur you get the most bang for your buck
+        //the weight is casted as a double since it is instantiated as an int
         sub[i].value = ((double) sub[i].weight / sub[i].cost);
         sub[i].name = i;
     }
 }
 
-void MostValuable(Subject sub[], Subject data[], int budget, int size) {
+void MostValuable(Subject sub[], Subject data[], double budget, int size) {
+    int x = 0;
     for (int i = size - 1; i >= 0; i--) {
         if (budget <= 0) {
             break;
         }
-        data[size - 1 - i] = sub[i];
+        //the sqrt equation is the distance equation for a circle, if it is less than 4 that means the circles overlap
+        //this is to insure that two subjects are not taken if they are to close together
+        if (sqrt(pow(sub[i].cord_x - data[x].cord_x, 2) + pow(sub[i].cord_y - data[x].cord_y, 2) < 4)){
+            continue;
+        }
+        data[x] = sub[i];
         budget -= sub[i].cost;
+        x++;
     }
 }
 
 void makeWeight(Subject sub[], int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            if (i == j)
+            //this is to make sure it does not add weight because of itself
+            if (i == j) {
                 continue;
-
-            int distance = sqrt(pow(sub[i].cord_x - sub[j].cord_x, 2) + pow(sub[i].cord_y - sub[j].cord_y, 2));
-            if (distance <= 4) {
+            }
+            //the sqrt equation is the distance equation for a circle, if it is less that 4 that means the circles overlap
+            if (sqrt(pow(sub[i].cord_x - sub[j].cord_x, 2) + pow(sub[i].cord_y - sub[j].cord_y, 2)) < 4) {
                 sub[i].weight++;
             }
         }
