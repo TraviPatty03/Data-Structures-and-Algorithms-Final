@@ -13,7 +13,7 @@ void setValues(Subject sub[], int size);
 
 void makeWeight(Subject sub[], int size);
 
-double totalValue(Subject sub[],int size);
+double totalValue(Subject sub[], int size);
 
 int partition(Subject arr[], int start, int end);
 
@@ -26,3 +26,5 @@ int Greedy_partition(Subject arr[], int start, int end);
 void Greedy_quickSort(Subject arr[], int start, int end);
 
 void Greedy(Subject sub[], Subject data[], double budget, int size);
+
+void Random(Subject sub[], Subject arr[], double budget, int size);

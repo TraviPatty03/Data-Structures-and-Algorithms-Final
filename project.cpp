@@ -15,6 +15,7 @@ int main() {
     Subject *sub = new Subject[size];
     Subject *best = new Subject[size];
     Subject *greedy = new Subject[size];
+    Subject *random = new Subject[size];
 
     //Gets the values not set in the constructor
     makeWeight(sub, size);
@@ -23,17 +24,23 @@ int main() {
     //grabs the most valuable from sorted array and makes sure that one subject is not close to another
     MostValuable(sub, best, budget, size);
 
+    //Do this first just because it's before all sorting so it's more random
+    Random(sub, random, budget, size);
+
     //prints Subject Name, Cost, and value
     cout << "-----My Algorithm------" << endl;
 //    printArray(best, size);
-    cout << "The total Value is: "  << totalValue(best, size) << endl;
-    
+    cout << "The total Value is: " << totalValue(best, size) << endl;
+
     //Creates greedy sort
     Greedy(sub, greedy, budget, size);
 
     cout << "----Greedy Algorithm---" << endl;
 //    printArray(greedy, size);
-    cout << "The total Value is: "  << totalValue(greedy, size) << endl;
+    cout << "The total Value is: " << totalValue(greedy, size) << endl;
+
+    cout << "---Random Algorithm----" << endl;
+    cout << "The total Value is: " << totalValue(random, size) << endl;
 
     //deletes the arrays in the heap
     delete[] sub;

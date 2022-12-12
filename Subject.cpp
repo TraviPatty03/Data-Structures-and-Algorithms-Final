@@ -20,4 +20,7 @@ Subject::Subject() {
     } else {
         cout << "ERROR" << endl;
     }
+
+    weight = 1;
+    HasBeen = false;
 };

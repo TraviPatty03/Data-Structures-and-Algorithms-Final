@@ -6,6 +6,7 @@ using namespace std;
 
 void printArray(Subject sub[], int size) {
     //print coordinates
+    cout << "Called" << endl;
     for (int i = 0; i <= size - 1; i++) {
         if (sub[i].value != 0) { //This is mainly for the second array where the array is not filled up
             cout << "Subject " << sub[i].name << endl;
@@ -40,9 +41,9 @@ void makeWeight(Subject sub[], int size) {
     }
 }
 
-double totalValue(Subject sub[],int size){
+double totalValue(Subject sub[], int size) {
     double x = 0;
-    for(int i = 0; i <= size - 1; i++){
+    for (int i = 0; i <= size - 1; i++) {
         x += sub[i].value;
     }
     return x;
@@ -180,6 +181,19 @@ void Greedy(Subject sub[], Subject data[], double budget, int size) {
             data[i] = sub[i];
             budget -= sub[i].cost;
             x++;
+        }
+    }
+}
+
+void Random(Subject sub[], Subject arr[], double budget, int size) {
+    int i = 0;
+    while (budget > 0) {
+        int x = rand() % size;
+        if (!sub[x].HasBeen) {
+            arr[i] = sub[x];
+            i++;
+            budget -= sub[x].cost;
+            sub[x].HasBeen = true;
         }
     }
 }

@@ -19,8 +19,11 @@ public:
 
     //value
     double cost;
-    int weight = 1;
+    int weight;
     double value;
+
+    //bool for random
+    bool HasBeen;
 
     //name to tell which subject is which after sorting
     int name;
