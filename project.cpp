@@ -49,6 +49,7 @@ int main() {
     delete[] sub;
     delete[] best;
     delete[] greedy;
+    delete[] random;
 
     return 0;
 }
