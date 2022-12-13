@@ -13,6 +13,8 @@ class Subject {
 public:
     Subject();
 
+    void SetSubjectValues();
+
     //location
     int cord_x;
     int cord_y;

@@ -18,7 +18,6 @@ int main() {
     Subject *random = new Subject[size];
 
     //Gets the values not set in the constructor
-    makeWeight(sub, size);
     setValues(sub, size);
 
     //grabs the most valuable from sorted array and makes sure that one subject is not close to another
@@ -29,18 +28,22 @@ int main() {
 
     //prints Subject Name, Cost, and value
     cout << "-----My Algorithm------" << endl;
-//    printArray(best, size);
     cout << "The total Value is: " << totalValue(best, size) << endl;
+    cout << "The total Cost is: " << totalCost(best, size) << endl;
+    cout << "The level of coverage is: " << LevelOfCoverage(best, size) << "%" << endl;
 
     //Creates greedy sort
     Greedy(sub, greedy, budget, size);
 
     cout << "----Greedy Algorithm---" << endl;
-//    printArray(greedy, size);
     cout << "The total Value is: " << totalValue(greedy, size) << endl;
+    cout << "The total Cost is: " << totalCost(greedy, size) << endl;
+    cout << "The level of coverage is: " << LevelOfCoverage(greedy, size) << "%" << endl;
 
     cout << "---Random Algorithm----" << endl;
     cout << "The total Value is: " << totalValue(random, size) << endl;
+    cout << "The total Cost is: " << totalCost(random, size) << endl;
+    cout << "The level of coverage is: " << LevelOfCoverage(random, size) << "%" << endl;
 
     //deletes the arrays in the heap
     delete[] sub;

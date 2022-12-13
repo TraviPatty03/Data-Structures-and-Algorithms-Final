@@ -15,6 +15,10 @@ void makeWeight(Subject sub[], int size);
 
 double totalValue(Subject sub[], int size);
 
+double totalCost(Subject sub[], int size);
+
+double LevelOfCoverage(Subject arr[], int size);
+
 int partition(Subject arr[], int start, int end);
 
 void quickSort(Subject arr[], int start, int end);

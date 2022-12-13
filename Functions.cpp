@@ -18,6 +18,10 @@ void printArray(Subject sub[], int size) {
 }
 
 void setValues(Subject sub[], int size) {
+    for(int i = 0; i <= size - 1; i++){
+        sub[i].SetSubjectValues();
+    }
+    makeWeight(sub, size);
     for (int i = 0; i <= size - 1; i++) {
         //the value is determined by the weight divided by cost to make sur you get the most bang for your buck
         //the weight is casted as a double since it is instantiated as an int
@@ -47,6 +51,24 @@ double totalValue(Subject sub[], int size) {
         x += sub[i].value;
     }
     return x;
+}
+double totalCost(Subject sub[], int size) {
+    double x = 0;
+    for (int i = 0; i <= size - 1; i++) {
+        x += sub[i].cost;
+    }
+    return x;
+}
+
+double LevelOfCoverage(Subject arr[], int size){
+    double LOC = 0;
+    double PI = 3.14;
+    for(int i = 0; i <= size - 1; i++){
+        if(arr[i].cost > 0){
+            LOC += PI * 4;
+        }
+    }
+    return LOC;
 }
 
 int partition(Subject arr[], int start, int end) {
@@ -112,9 +134,14 @@ void MostValuable(Subject sub[], Subject data[], double budget, int size) {
         if (sqrt(pow(sub[i].cord_x - data[x].cord_x, 2) + pow(sub[i].cord_y - data[x].cord_y, 2) < 4)) {
             continue;
         }
-        data[x] = sub[i];
-        budget -= sub[i].cost;
-        x++;
+        if(budget - sub[i].cost >= 0){
+            data[x] = sub[i];
+            budget -= sub[i].cost;
+            x++;
+        }
+        else{
+            continue;
+        }
     }
 }
 
@@ -177,8 +204,8 @@ void Greedy(Subject sub[], Subject data[], double budget, int size) {
         if (sqrt(pow(sub[i].cord_x - data[x].cord_x, 2) + pow(sub[i].cord_y - data[x].cord_y, 2) <= 4)) {
             continue;
         }
-        if (budget > 0) {
-            data[i] = sub[i];
+        if (budget - sub[i].cost > 0) {
+            data[x] = sub[i];
             budget -= sub[i].cost;
             x++;
         }
@@ -187,13 +214,16 @@ void Greedy(Subject sub[], Subject data[], double budget, int size) {
 
 void Random(Subject sub[], Subject arr[], double budget, int size) {
     int i = 0;
-    while (budget > 0) {
+    while (true){
         int x = rand() % size;
-        if (!sub[x].HasBeen) {
+        if (!sub[x].HasBeen && budget - sub[x].cost >= 0) {
             arr[i] = sub[x];
             i++;
             budget -= sub[x].cost;
             sub[x].HasBeen = true;
+        }
+        else if (budget - sub[x].cost < 0){
+            break;
         }
     }
 }

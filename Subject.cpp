@@ -5,6 +5,16 @@
 #include "Subject.h"
 
 Subject::Subject() {
+    cord_x=0;
+    cord_y=0;
+
+    cost=0;
+
+    weight = 1;
+    HasBeen = false;
+};
+
+void Subject::SetSubjectValues(){
     //randomly sets coordinates
     cord_x = (rand() % 100) + 1;
     cord_y = (rand() % 100) + 1;
@@ -20,7 +30,4 @@ Subject::Subject() {
     } else {
         cout << "ERROR" << endl;
     }
-
-    weight = 1;
-    HasBeen = false;
-};
+}
