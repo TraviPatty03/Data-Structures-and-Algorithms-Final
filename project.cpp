@@ -3,7 +3,8 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     //sets time seed
     srand(time(nullptr));
 

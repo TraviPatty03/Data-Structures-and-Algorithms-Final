@@ -9,7 +9,8 @@ using namespace std;
 #define UNTITLED_SUBJECT_H
 
 
-class Subject {
+class Subject
+{
 public:
     Subject();
 

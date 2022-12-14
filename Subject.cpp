@@ -4,7 +4,8 @@
 
 #include "Subject.h"
 
-Subject::Subject() {
+Subject::Subject()
+{
     cord_x = 0;
     cord_y = 0;
 
@@ -14,20 +15,30 @@ Subject::Subject() {
     HasBeen = false;
 };
 
-void Subject::SetSubjectValues() {
+void Subject::SetSubjectValues()
+{
     //randomly sets coordinates
     cord_x = (rand() % 100) + 1;
     cord_y = (rand() % 100) + 1;
 
-    if (cord_x < 50 && cord_y < 50) {
+    if (cord_x < 50 && cord_y < 50)
+    {
         cost = 0.5; //Super Poor District
-    } else if (cord_x < 50 && cord_y >= 50) {
+    }
+    else if (cord_x < 50 && cord_y >= 50)
+    {
         cost = 1; //Not-so poor District
-    } else if (cord_x >= 50 && cord_y < 50) {
+    }
+    else if (cord_x >= 50 && cord_y < 50)
+    {
         cost = 1.5; // Middle District
-    } else if (cord_x >= 50 && cord_y >= 50) {
+    }
+    else if (cord_x >= 50 && cord_y >= 50)
+    {
         cost = 2; //Rich District
-    } else {
+    }
+    else
+    {
         cout << "ERROR" << endl;
     }
 }
